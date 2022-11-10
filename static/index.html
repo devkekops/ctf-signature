@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet">
+
+    <title>CTF</title>
+    <!--Vue-->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.3"></script>
+    <!-- Optional JavaScript -->
+    <!--Axios-->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+</head>
+<body>
+
+<div class="container" id="app">
+    <div class="py-5 text-center">
+        <h1>Welcome to Bank Admin dashboard!</h1>
+        <br>
+        <img class="d-block mx-auto mb-4" src="https://www.shareicon.net/download/2015/09/20/104335_avatar.svg"
+             alt="" height="100px">
+        <div id="app">
+            <form>
+                <label>Enter Payment ID</label>
+                <input required="" autofocus="">
+                <button type="button" class="btn btn-info" v-on:click="getPayment">Get Payment Info</button>
+            </form>
+            <br>
+            <!--<button v-on:click="getOperation">Operation Info</button>-->
+            <button type="button" class="btn btn-info" v-on:click="getPayments">Get Last Payments Info</button>
+            <div class="container">
+                <br>
+                <table class="table" border="1">
+                  <thead>
+                    <tr>
+                      <th v-for="header in headers">
+                        {{header}}
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="result in results">
+                      <td>{{result.id}}</td>
+                      <td>{{result.date}}</td>
+                      <td>{{result.from_account_id}}</td>
+                      <td>{{result.to_account_id}}</td>
+                      <td>{{result.sum}}</td>
+                      <td>{{result.message}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            <!--<div class="container">
+                <br>
+                <h3>Result</h3>
+                <br>
+                <ul>
+                <li v-for="result in results">
+                    {{result}}
+                </li>
+                </ul>
+            </div>-->
+        </div>
+    </div>
+</div>
+
+<!-- BEGIN: APP JS-->
+<script src="app.js"></script>
+<!-- END: APP JS-->
+
+</body>
+</html>
