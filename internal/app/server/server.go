@@ -12,7 +12,7 @@ func Serve(cfg *config.Config) error {
 	var paymentRepo storage.PaymentRepository
 	paymentRepo = storage.NewPaymentRepo()
 
-	var baseHandler = handlers.NewBaseHandler(paymentRepo)
+	var baseHandler = handlers.NewBaseHandler(paymentRepo, cfg.SecretKey)
 
 	server := &http.Server{
 		Addr:    cfg.ServerAddress,

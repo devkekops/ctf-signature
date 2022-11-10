@@ -55,7 +55,7 @@ func NewPaymentRepo() *PaymentRepo {
 		now = now - rand.Int63n(172800)
 	}
 
-	lastPayment := Payment{
+	flagPayment := Payment{
 		ID:            uuid.New().String(),
 		Date:          time.Unix(now, 0),
 		FromAccountID: rand.Intn(50000),
@@ -64,7 +64,27 @@ func NewPaymentRepo() *PaymentRepo {
 		Message:       "here is your flag: the_security_of_the_md5_is_severely_compromised",
 	}
 
-	idToPaymentMap[lastPayment.ID] = lastPayment
+	idToPaymentMap[flagPayment.ID] = flagPayment
+
+	for i := 1; i < 50; i++ {
+		b := make([]rune, 50)
+		for i := range b {
+			b[i] = letterRunes[rand.Intn(len(letterRunes))]
+		}
+
+		p := Payment{
+			ID:            uuid.New().String(),
+			Date:          time.Unix(now, 0),
+			FromAccountID: rand.Intn(1000),
+			ToAccountID:   rand.Intn(1000),
+			Sum:           math.Round(rand.Float64()*100)/100 + float64(rand.Intn(1000000)),
+			Message:       string(b),
+		}
+
+		idToPaymentMap[p.ID] = p
+
+		now = now - rand.Int63n(172800)
+	}
 
 	return &PaymentRepo{
 		idToPaymentMap: idToPaymentMap,

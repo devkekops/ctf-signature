@@ -16,25 +16,27 @@ import (
 )
 
 type BaseHandler struct {
-	*chi.Mux
+	mux         *chi.Mux
+	secretKey   string
 	fs          http.Handler
 	paymentRepo storage.PaymentRepository
 }
 
-func NewBaseHandler(paymentRepo storage.PaymentRepository) *BaseHandler {
+func NewBaseHandler(paymentRepo storage.PaymentRepository, secretKey string) *chi.Mux {
 	cwd, _ := os.Getwd()
 	root := filepath.Join(cwd, "/static")
 	fs := http.FileServer(http.Dir(root))
 
 	bh := &BaseHandler{
-		Mux:         chi.NewMux(),
+		mux:         chi.NewMux(),
+		secretKey:   secretKey,
 		fs:          fs,
 		paymentRepo: paymentRepo,
 	}
 
-	bh.Use(middleware.Logger)
+	bh.mux.Use(middleware.Logger)
 
-	bh.Use(cors.Handler(cors.Options{
+	bh.mux.Use(cors.Handler(cors.Options{
 		AllowedOrigins:   []string{"https://*", "http://*"},
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
@@ -43,11 +45,14 @@ func NewBaseHandler(paymentRepo storage.PaymentRepository) *BaseHandler {
 		MaxAge:           300, // Maximum value not ignored by any of major browsers
 	}))
 
-	bh.Handle("/*", fs)
-	bh.Get("/getPayments", bh.getPayments())
-	bh.Get("/getPayment", bh.getPayment())
+	bh.mux.Handle("/*", fs)
+	bh.mux.Route("/api", func(r chi.Router) {
+		r.Use(sigHandle(bh.secretKey))
+		r.Get("/getPayments", bh.getPayments())
+		r.Get("/getPayment", bh.getPayment())
+	})
 
-	return bh
+	return bh.mux
 }
 
 func (bh *BaseHandler) getPayments() http.HandlerFunc {
