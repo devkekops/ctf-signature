@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strconv"
 
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/chi/v5"
@@ -51,9 +52,19 @@ func NewBaseHandler(paymentRepo storage.PaymentRepository) *BaseHandler {
 
 func (bh *BaseHandler) getPayments() http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
-		payments, err := bh.paymentRepo.GetPayments()
+		idString := req.URL.Query().Get("offset")
+		id, err := strconv.ParseInt(idString, 10, 64)
 		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
 			log.Println(err)
+			return
+		}
+
+		payments, err := bh.paymentRepo.GetPayments(id)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			log.Println(err)
+			return
 		}
 
 		buf, err := json.Marshal(payments)
@@ -74,9 +85,12 @@ func (bh *BaseHandler) getPayments() http.HandlerFunc {
 
 func (bh *BaseHandler) getPayment() http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
-		payments, err := bh.paymentRepo.GetPayments()
+		id := req.URL.Query().Get("id")
+		payments, err := bh.paymentRepo.GetPayment(id)
 		if err != nil {
+			w.WriteHeader(http.StatusNotFound)
 			log.Println(err)
+			return
 		}
 
 		buf, err := json.Marshal(payments)
