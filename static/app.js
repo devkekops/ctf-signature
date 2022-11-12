@@ -1,6 +1,7 @@
 var app = new Vue({
     el: '#app',
     data: {
+        tableVisibility: false,
         headers: ["ID", "Date", "From_account", "To_account", "Sum", "Message"],
         results: [],
         paymentId: '',
@@ -14,7 +15,7 @@ var app = new Vue({
             axios
                 .get('http://0.0.0.0:8080/api/getPayment?id=' + this.paymentId, {headers})
                 .then(response => (
-                    this.results = [response.data]), this.paymentId = '');
+                    this.tableVisibility = true, this.results = [response.data]), this.paymentId = '');
         },
         getPayments: function() {
             this.results = [];
@@ -22,7 +23,7 @@ var app = new Vue({
             axios
                 .get('http://0.0.0.0:8080/api/getPayments?offset=' + this.offset, {headers})
                 .then(response => (
-                    this.results = response.data));
+                    this.tableVisibility = true, this.results = response.data));
         },
     },
 })
