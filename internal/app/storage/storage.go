@@ -61,7 +61,7 @@ func NewPaymentRepo() *PaymentRepo {
 		FromAccountID: rand.Intn(50000),
 		ToAccountID:   rand.Intn(50000),
 		Sum:           math.Round(rand.Float64()*100)/100 + float64(rand.Intn(1000000)),
-		Message:       "here is your flag: the_security_of_the_md5_is_severely_compromised",
+		Message:       "here is your flag: sbmt_ctf_the_security_of_the_md5_is_severely_compromised",
 	}
 
 	idToPaymentMap[flagPayment.ID] = flagPayment

@@ -17,6 +17,7 @@ func main() {
 	}
 
 	flag.StringVar(&cfg.ServerAddress, "a", cfg.ServerAddress, "server address")
+	flag.StringVar(&cfg.SecretKey, "k", cfg.SecretKey, "secret key")
 	flag.Parse()
 
 	log.Fatal(server.Serve(&cfg))
