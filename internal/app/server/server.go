@@ -10,7 +10,7 @@ import (
 
 func Serve(cfg *config.Config) error {
 	var paymentRepo storage.PaymentRepository
-	paymentRepo = storage.NewPaymentRepo()
+	paymentRepo = storage.NewPaymentRepo(cfg.Flag)
 
 	var baseHandler = handlers.NewBaseHandler(paymentRepo, cfg.SecretKey)
 

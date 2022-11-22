@@ -28,7 +28,7 @@ type PaymentRepo struct {
 	idToPaymentMap map[string]Payment
 }
 
-func NewPaymentRepo() *PaymentRepo {
+func NewPaymentRepo(flag string) *PaymentRepo {
 	idToPaymentMap := make(map[string]Payment)
 
 	rand.Seed(time.Now().UnixNano())
@@ -61,7 +61,7 @@ func NewPaymentRepo() *PaymentRepo {
 		FromAccountID: rand.Intn(50000),
 		ToAccountID:   rand.Intn(50000),
 		Sum:           math.Round(rand.Float64()*100)/100 + float64(rand.Intn(1000000)),
-		Message:       "here is your flag: sbmt_ctf_the_security_of_the_md5_is_severely_compromised",
+		Message:       "here is your flag: " + flag,
 	}
 
 	idToPaymentMap[flagPayment.ID] = flagPayment
