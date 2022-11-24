@@ -13,7 +13,7 @@ var app = new Vue({
             this.results = [];
             const headers = {'X-SIG-TOKEN': CryptoJS.MD5('id=' + this.paymentId + 'secret_key=' + this.secretKey)}
             axios
-                .get('http://' + window.location.hostname + '/api/getPayment?id=' + this.paymentId, {headers})
+                .get('http://0.0.0.0/api/getPayment?id=' + this.paymentId, {headers})
                 .then(response => (
                     this.tableVisibility = true, this.results = [response.data]), this.paymentId = '');
         },
@@ -21,7 +21,7 @@ var app = new Vue({
             this.results = [];
             const headers = {'X-SIG-TOKEN': CryptoJS.MD5('offset=' + this.offset + 'secret_key=' + this.secretKey)}
             axios
-                .get('http://' + + window.location.hostname + '/api/getPayments?offset=' + this.offset, {headers})
+                .get('http://0.0.0.0/api/getPayments?offset=' + this.offset, {headers})
                 .then(response => (
                     this.tableVisibility = true, this.results = response.data));
         },
